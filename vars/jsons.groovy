@@ -1,12 +1,12 @@
 def jsonParse(String fileName){
-    def result =[:]
+    def info =[:]
     def jsonObj = readJSON file fileName
-    result['name'] = jsonObj.name
-    result['dev_version'] = jsonObj.version.dev
-    result['qa_version'] = jsonObj.version.qa
-    result['prod_version'] = jsonObj.version.prod
-    result['description'] = jsonObj.description
-    return result
+    info['name'] = jsonObj.name
+    info['dev_version'] = jsonObj.version.dev
+    info['qa_version'] = jsonObj.version.qa
+    info['prod_version'] = jsonObj.version.prod
+    info['description'] = jsonObj.description
+    return info
 }
 def jsonStringify(Map data){
     return JsonOutput.prettyPrint(JsonOutput.toJson([
