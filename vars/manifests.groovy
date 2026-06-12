@@ -5,7 +5,6 @@ def pull(String repoOwner, String repo) {
         "REPO=${repo}"
     ]) {
         sh '''
-            rm -rf "$REPO"
             git clone "https://github.com/$REPO_OWNER/$REPO.git"
         '''
     }
