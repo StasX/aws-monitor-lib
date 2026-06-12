@@ -1,6 +1,9 @@
 def pull(String repoOwner, String repo){
     echo "Cloning..."
-    sh "git clone https://github.com/${repoOwner}/${repo}.git"
+    sh """
+    rm -rf ${repo}
+    git clone https://github.com/${repoOwner}/${repo}.git
+    """
 }
 def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
     echo "Prepare HELM manifest for ${envName} environment..."
