@@ -1,4 +1,4 @@
-def pull(String repoOwner, String repo) {
+def pull(String repo, String repoOwner) {
     echo "Cloning..."
     withEnv([
         "REPO=${repoOwner}/${repo}"
