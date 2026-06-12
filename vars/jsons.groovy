@@ -1,6 +1,5 @@
-def jsonParse(String fileName,envType){
+def jsonParse( jsonObj, String envType){
     def info =[:]
-    def jsonObj = readJSON file fileName
     info['name'] = jsonObj.name
     info['dev_version'] = jsonObj.version.dev
     info['qa_version'] = jsonObj.version.qa
