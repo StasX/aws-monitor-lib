@@ -38,7 +38,7 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         "GIT_EMAIL=${email}"
         ]) {
             sh '''
-                mv manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml"
+                cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml"
                 git -C "$REPO" config user.name "$GH_USER"
                 git -C "$REPO" config user.email "$GIT_EMAIL"
                 git -C "$REPO" add manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml
