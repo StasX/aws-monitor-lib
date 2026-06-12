@@ -1,12 +1,11 @@
 def pull(String repoOwner, String repo) {
     echo "Cloning..."
     withEnv([
-        "REPO_OWNER=${repoOwner}",
-        "REPO=${repo}"
+        "REPO=${repoOwner}/${repo}"
     ]) {
         sh '''
-            echo cloning "https://github.com/$REPO_OWNER/$REPO.git" 
-            git clone "https://github.com/$REPO_OWNER/$REPO.git"
+            echo cloning "https://github.com/$REPO.git" 
+            git clone "https://github.com/$REPO.git"
         '''
     }
 }
