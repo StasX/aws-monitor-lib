@@ -1,4 +1,4 @@
-def jsonParse( jsonObj, String envType){
+def parse( jsonObj, String envType){
     def info =[:]
     info['name'] = jsonObj.name
     info['dev_version'] = jsonObj.version.dev
@@ -8,7 +8,7 @@ def jsonParse( jsonObj, String envType){
     def image = info["name"].toLowerCase().replaceAll(' ', '-')
     return [info, info["${envType}_version"], image]
 }
-def jsonStringify(Map data){
+def stringify(Map data){
     return JsonOutput.prettyPrint(JsonOutput.toJson([
         name: data['name'],
         version: [
