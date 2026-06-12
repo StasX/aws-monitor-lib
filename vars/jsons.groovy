@@ -30,5 +30,5 @@ def saveToJson(Map data, String fileName){
         ],
         description: data['description']
     ]
-    return writeJSON(file: fileName, json: payload, pretty: 4)
+    writeJSON(file: fileName, json: payload, pretty: 4)
 }
