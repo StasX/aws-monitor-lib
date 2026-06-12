@@ -1,4 +1,4 @@
-def create manifest(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
+def createManifest(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
     echo "Prepare HELM manifest for ${envName} environment..."
     sh """                        
         rm -rf temp && \
