@@ -1,4 +1,4 @@
-def jsonParse(String fileName){
+def jsonParse(String fileName,envType){
     def info =[:]
     def jsonObj = readJSON file fileName
     info['name'] = jsonObj.name
@@ -6,7 +6,8 @@ def jsonParse(String fileName){
     info['qa_version'] = jsonObj.version.qa
     info['prod_version'] = jsonObj.version.prod
     info['description'] = jsonObj.description
-    return info
+    def image = info["name"].toLowerCase().replaceAll(' ', '-')
+    return [info, info["${envType}_version"], image]
 }
 def jsonStringify(Map data){
     return JsonOutput.prettyPrint(JsonOutput.toJson([
