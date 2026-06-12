@@ -1,9 +1,14 @@
-def pull(String repoOwner, String repo){
+def pull(String repoOwner, String repo) {
     echo "Cloning..."
-    sh """
-    rm -rf ${repo}
-    git clone https://github.com/${repoOwner}/${repo}.git
-    """
+    withEnv([
+        "REPO_OWNER=${repoOwner}",
+        "REPO=${repo}"
+    ]) {
+        sh '''
+            rm -rf "$REPO"
+            git clone "https://github.com/$REPO_OWNER/$REPO.git"
+        '''
+    }
 }
 def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
     echo "Prepare HELM manifest for ${envName} environment..."
