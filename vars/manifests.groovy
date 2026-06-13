@@ -38,7 +38,8 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         "GIT_EMAIL=${email}"
         ]) {
             sh '''
-                cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml"
+                mkdir -p argo-gitops/manifests/aws-monitor/dev
+                cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME"
                 git -C "$REPO" config user.name "$GH_USER"
                 git -C "$REPO" config user.email "$GIT_EMAIL"
                 git -C "$REPO" add manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml
