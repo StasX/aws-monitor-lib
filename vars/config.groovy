@@ -9,6 +9,9 @@ def update(String repoOwner, String repo, String email, String version){
             "VERSION=${version}"
         ]) {
             sh '''
+                echo "=============================================="
+                ls -la
+                echo "=============================================="
                 git config user.name "$USER"
                 git config user.email "$EMAIL"
                 git add .app-info.json
