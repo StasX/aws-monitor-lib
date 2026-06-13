@@ -11,10 +11,7 @@ def pull(String repo, String repoOwner) {
 }
 def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
     echo "Prepare HELM manifest for ${envName} environment..."
-    sh """
-        echo '======================================================================================='                        
-        ls -la
-        echo '======================================================================================='                        
+    sh """            
         rm -rf temp && \
         mkdir temp
         rm -rf manifests && \
@@ -26,6 +23,9 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
         --set-string pod.tag="${tag}" \
         --set-string pod.name="${appName}" \
         --set secret.enabled=false > manifests/app.yaml
+        echo '======================================================================================='                        
+        ls -la
+        echo '======================================================================================='         
     """
 }
 def push ( String repo, String repoOwner, String appName, String envName, String envShortName, String email){
