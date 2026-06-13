@@ -12,7 +12,7 @@ def update(String repoOwner, String repo, String email, String version){
                 git init $REPO
                 git -C "$REPO" config user.name "$USER"
                 git -C "$REPO" config user.email "$EMAIL"                
-                git -C "$REPO" remote add origin "https://x-access-token:${TOKEN}@github.com/${repoOwner}/${repo}.git"
+                git -C "$REPO" remote add origin "https://x-access-token:$TOKEN@github.com/$REPO_OWNER/$REPO.git"
                 git -C "$REPO" sparse-checkout set
                 git -C "$REPO" sparse-checkout add ".app-info.json"
                 git -C "$REPO" pull origin main
