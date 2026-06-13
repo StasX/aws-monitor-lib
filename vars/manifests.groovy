@@ -44,7 +44,7 @@ def push ( String repo, String repoOwner, String appName, String envName, String
                 git -C "$REPO" config user.email "$GIT_EMAIL"
                 git -C "$REPO" add manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml
                 git -C "$REPO" commit -m "Update application in $ENV_SHORT_NAME environment"
-                git -C "$REPO" remote set-url origin https://x-access-token:$GH_TOKEN@github.com/$REPO_OWNER/$GITOPS_REPO.git
+                git -C "$REPO" remote set-url origin https://x-access-token:$GH_TOKEN@github.com/$REPO_OWNER/$REPO.git
                 git -C "$REPO" push origin main
                 rm -r temp
             '''
