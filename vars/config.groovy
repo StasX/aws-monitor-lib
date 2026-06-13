@@ -9,15 +9,17 @@ def update(String repoOwner, String repo, String email, String version){
             "VERSION=${version}"
         ]) {
             sh '''
-                echo "=============================================="
-                ls -la
-                echo "=============================================="
-                git config user.name "$USER"
-                git config user.email "$EMAIL"
-                git add .app-info.json
-                git commit -m "Update next app version: $VERSION in .app-info.json"
-                git remote set-url origin https://x-access-token:$TOKEN@github.com/$REPO_OWNER/$REPO.git
-                git push origin main
+                git init $REPO
+                git -C "$REPO" config user.name "$USER"
+                git -C "$REPO" config user.email "$EMAIL"                
+                git -C "$REPO" remote add origin "https://x-access-token:${TOKEN}@github.com/${repoOwner}/${repo}.git"
+                git -C "$REPO" sparse-checkout set
+                git -C "$REPO" sparse-checkout add ".app-info.json"
+                git -C "$REPO" pull origin main
+                cp .app-info.json $REPO/
+                git -C "$REPO" add .app-info.json
+                git -C "$REPO" commit -m "Update next app version: $VERSION in .app-info.json"
+                git -C "$REPO" push origin main
             '''
         }
     }
