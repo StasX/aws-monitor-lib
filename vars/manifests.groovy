@@ -22,10 +22,7 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
         --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
         --set-string pod.tag="${tag}" \
         --set-string pod.name="${appName}" \
-        --set secret.enabled=false > manifests/app.yaml
-        echo '======================================================================================='                        
-        ls -la
-        echo '======================================================================================='         
+        --set secret.enabled=false > manifests/app.yaml      
     """
 }
 def push ( String repo, String repoOwner, String appName, String envName, String envShortName, String email){
@@ -41,6 +38,9 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         "GIT_EMAIL=${email}"
         ]) {
             sh '''
+                echo '======================================================================================='                        
+                ls -la
+                echo '======================================================================================='   
                 mkdir -p argo-gitops/manifests/aws-monitor/dev
                 cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME"
                 git -C "$REPO" config user.name "$GH_USER"
