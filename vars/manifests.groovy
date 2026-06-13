@@ -39,7 +39,7 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         ]) {
             sh '''
                 echo '======================================================================================='                        
-                ls -la
+                ls -la argo-gitops
                 echo '======================================================================================='   
                 mkdir -p argo-gitops/manifests/aws-monitor/dev
                 cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME"
