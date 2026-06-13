@@ -11,7 +11,10 @@ def pull(String repo, String repoOwner) {
 }
 def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
     echo "Prepare HELM manifest for ${envName} environment..."
-    sh """                        
+    sh """
+        echo '======================================================================================='                        
+        ls -la
+        echo '======================================================================================='                        
         rm -rf temp && \
         mkdir temp
         rm -rf manifests && \
