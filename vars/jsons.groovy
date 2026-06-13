@@ -9,7 +9,7 @@ def parse( jsonObj, String envType){
     return [info, info["${envType}_version"], image]
 }
 def stringify(Map data){
-    return JsonOutput.prettyPrint(JsonOutput.toJson([
+    return groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([
         name: data['name'],
         version: [
             dev : data['dev_version'],
