@@ -1,11 +1,10 @@
-def build(repoOwner, image, version, env){
+def build(repoOwner, image, version, envName){
     echo "Building docker image..."
-    if(envShortName != "dev" && envShortName != "qa"){
+    if(envName != "dev" && envName != "qa"){
         sh "docker build -t docker.io/${repoOwner}/${image}:${version} ."
-    } 
-    else{
-        sh "docker build -t docker.io/${repoOwner}/${image}:${version}-${env} ."
+        return 0
     }
+    sh "docker build -t docker.io/${repoOwner}/${image}:${version}-${envName} ."
 }
 
 def tag(repoOwner, image, version){
