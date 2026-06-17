@@ -7,12 +7,20 @@ def build(repoOwner, image, version, envName){
     sh "docker build -t docker.io/${repoOwner}/${image}:${version}-${envName} ."
 }
 
-def tag(repoOwner, image, version){
+def tag(repoOwner, image, version, envName){
     echo "Tagging docker image..."
+    if(envName != "dev" && envName != "qa"){
+        sh """
+        docker tag \
+        docker.io/${repoOwner}/${image}:${version} \
+        docker.io/${repoOwner}/${image}:latest
+        """
+        return 0
+    }
     sh """
     docker tag \
-    docker.io/${repoOwner}/${image}:${version} \
-    docker.io/${repoOwner}/${image}:latest
+    docker.io/${repoOwner}/${image}:${version}-${envName} \
+    docker.io/${repoOwner}/${image}:latest-${envName}
     """
 }
 def login(){
@@ -21,9 +29,14 @@ def login(){
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} docker.io"
     }
 }
-def push(repoOwner, image, version){
+def push(repoOwner, image, version, , envName){
     echo "Pushing docker image to registry..."
-    sh "docker push docker.io/${repoOwner}/${image}:${version}"
-    sh "docker push  docker.io/${repoOwner}/${image}:latest"    
+    if(envName != "dev" && envName != "qa"){
+        sh "docker push docker.io/${repoOwner}/${image}:${version}"
+        sh "docker push  docker.io/${repoOwner}/${image}:latest"
+        return 0
+    }
+        sh "docker push docker.io/${repoOwner}/${image}:${version}-${envName}"
+        sh "docker push  docker.io/${repoOwner}/${image}:latest-${envName}"
 }
               
