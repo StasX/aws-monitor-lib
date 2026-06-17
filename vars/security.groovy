@@ -29,10 +29,19 @@ def semgrepScan(){
     """
 }
 
-def trivyScan(String repoOwner, String image, String tag){
+def trivyScan(String repoOwner, String image, String tag, envName, envShortName){
+    if(envName=="Production"){
+        sh """
+        docker run -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image ${repoOwner}/${image}:${tag} \
+        --severity HIGH,CRITICAL \
+        --exit-code 1
+        """
+        return 0
+    } 
     sh """
     docker run -v /var/run/docker.sock:/var/run/docker.sock \
-    aquasec/trivy image ${repoOwner}/${image}:${tag} \
+    aquasec/trivy image ${repoOwner}/${image}:${tag}-${envShortName} \
     --severity HIGH,CRITICAL \
     --exit-code 1
     """
