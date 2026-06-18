@@ -48,14 +48,14 @@ def trivyScanFile(String path, String file){
 } 
 def kubeScoreScan(String path, String file){
     withEnv([
-        "PATH=${path}",
-        "FILE=${file}",
+        "SCAN_PATH=${path}",
+        "SCAN_FILE=${file}",
         ]) {
     sh '''
     docker run --rm \
-      -v $PATH:/work \
+      -v $SCAN_PATH:/work \
       zegl/kube-score:latest \
-      score /work/$FILE
+      score /work/$SCAN_FILE
     '''    
 }
 }
