@@ -5,10 +5,7 @@ def banditScan (){
     python -m bandit -r ./ -x ./.venv,./venv
     """
 }
-def checkovScan(String path, String pathFlag, String framework, String venv= ".venv"){
-    sh "${venv}/bin/python -m checkov.main ${pathFlag} ${path} --framework ${framework}"
-}
-// Default to the absolute path in /tmp so it can be called from any workspace directory
+
 def checkovScan(String path, String pathFlag, String framework, String venv = "/tmp/.venv") {
     sh "${venv}/bin/python -m checkov.main ${pathFlag} ${path} --framework ${framework}"
 }
