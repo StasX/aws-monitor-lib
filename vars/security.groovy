@@ -7,7 +7,7 @@ def banditScan (){
 }
 
 def checkovScan(String path, String pathFlag, String framework, String venv = "/tmp/.venv") {
-    sh "${venv}/bin/python -m checkov.main ${pathFlag} ${path} --framework ${framework}"
+    sh "${venv}/bin/checkov ${pathFlag} ${path} --framework ${framework}"
 }
 
 def semgrepScan(){
