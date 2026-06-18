@@ -38,7 +38,7 @@ def push(String repoOwner, String image, String version, String envName, String 
         """
         return  0
     }
-    sh """"
+    sh """
     docker push docker.io/${repoOwner}/${image}:${version}-${envShortName}
     docker push  docker.io/${repoOwner}/${image}:latest-${envShortName}
     """
