@@ -1,27 +1,27 @@
-def build(repoOwner, image, version, envName){
+def build(repoOwner, image, version, envName, envShortName){
     echo "Building docker image..."
-    if(envName != "dev" && envName != "qa"){
+    if(envName=="Production"){
         sh "docker build -t docker.io/${repoOwner}/${image}:${version} ."
-        return 0
+    } else {
+        sh "docker build -t docker.io/${repoOwner}/${image}:${version}-${envShortName} ."
     }
-    sh "docker build -t docker.io/${repoOwner}/${image}:${version}-${envName} ."
 }
 
-def tag(repoOwner, image, version, envName){
+def tag(repoOwner, image, version, envName, envShortName){
     echo "Tagging docker image..."
-    if(envName != "dev" && envName != "qa"){
+    if(envName=="Production"){
         sh """
         docker tag \
         docker.io/${repoOwner}/${image}:${version} \
         docker.io/${repoOwner}/${image}:latest
         """
-        return 0
+    } else {
+        sh """
+        docker tag \
+        docker.io/${repoOwner}/${image}:${version}-${envShortName} \
+        docker.io/${repoOwner}/${image}:latest-${envShortName}
+        """
     }
-    sh """
-    docker tag \
-    docker.io/${repoOwner}/${image}:${version}-${envName} \
-    docker.io/${repoOwner}/${image}:latest-${envName}
-    """
 }
 def login(){
     echo "Logging in to Docker registry..."
@@ -29,14 +29,14 @@ def login(){
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} docker.io"
     }
 }
-def push(repoOwner, image, version, , envName){
+def push(repoOwner, image, version, , envName, envShortName){
     echo "Pushing docker image to registry..."
-    if(envName != "dev" && envName != "qa"){
+    if(envName=="Production"){
         sh "docker push docker.io/${repoOwner}/${image}:${version}"
         sh "docker push  docker.io/${repoOwner}/${image}:latest"
-        return 0
+    } else {
+        sh "docker push docker.io/${repoOwner}/${image}:${version}-${envShortName}"
+        sh "docker push  docker.io/${repoOwner}/${image}:latest-${envShortName}"
     }
-        sh "docker push docker.io/${repoOwner}/${image}:${version}-${envName}"
-        sh "docker push  docker.io/${repoOwner}/${image}:latest-${envName}"
 }
               
