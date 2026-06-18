@@ -29,7 +29,7 @@ def login(){
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} docker.io"
     }
 }
-def push(repoOwner, image, version, , envName, envShortName){
+def push(repoOwner, image, version, envName, envShortName){
     echo "Pushing docker image to registry..."
     if(envName=="Production"){
         sh "docker push docker.io/${repoOwner}/${image}:${version}"
