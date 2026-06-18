@@ -5,14 +5,8 @@ def banditScan (){
     python -m bandit -r ./ -x ./.venv,./venv
     """
 }
-def checkovScan(){
-    sh """
-    python3 -m venv .venv
-    . .venv/bin/activate
-    pip install checkov
-    .venv/bin/python -m checkov.main -f Dockerfile --framework dockerfile
-    .venv/bin/python -m checkov.main -d ./chart --framework helm
-    """
+def checkovScan(String path, String pathFlag, String framework, String venv){
+    sh "${venv}/bin/python -m checkov.main ${pathFlag} ${path} --framework ${framework}"
 }
 def semgrepScan(){
     sh """
