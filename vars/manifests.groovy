@@ -9,20 +9,36 @@ def pull(String repo, String repoOwner) {
         '''
     }
 }
-def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag ){
+def create(String envName, String envShortName, String gitOpsRepo, String appName, String dockerRepoOwner, String imageName, String tag){
     echo "Prepare HELM manifest for ${envName} environment..."
+    if(envName=="Production"){
+        sh """            
+            rm -rf temp && \
+            mkdir temp
+            rm -rf manifests && \
+            mkdir manifests
+            cp chart/* -r temp/
+            cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
+            helm template ${appName} ./temp \
+            --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
+            --set-string pod.tag="${tag}" \
+            --set-string pod.name="${appName}" \
+            --set secret.enabled=false > manifests/app.yaml      
+        """
+        return 0
+    }
     sh """            
-        rm -rf temp && \
-        mkdir temp
-        rm -rf manifests && \
-        mkdir manifests
-        cp chart/* -r temp/
-        cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
-        helm template ${appName} ./temp \
-        --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
-        --set-string pod.tag="${tag}" \
-        --set-string pod.name="${appName}" \
-        --set secret.enabled=false > manifests/app.yaml      
+    rm -rf temp && \
+    mkdir temp
+    rm -rf manifests && \
+    mkdir manifests
+    cp chart/* -r temp/
+    cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
+    helm template ${appName} ./temp \
+    --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
+    --set-string pod.tag="${tag}-${envShortName}" \
+    --set-string pod.name="${appName}" \
+    --set secret.enabled=false > manifests/app.yaml      
     """
 }
 def push ( String repo, String repoOwner, String appName, String envName, String envShortName, String email){
