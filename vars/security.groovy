@@ -18,7 +18,7 @@ def semgrepScan(){
     """
 }
 
-def trivyScan(String repoOwner, String image, String tag, envName, envShortName){
+def trivyScanImage(String repoOwner, String image, String tag, envName, envShortName){
     if(envName=="Production"){
         sh """
         docker run -v /var/run/docker.sock:/var/run/docker.sock \
@@ -34,4 +34,28 @@ def trivyScan(String repoOwner, String image, String tag, envName, envShortName)
     --severity HIGH,CRITICAL \
     --exit-code 1
     """
+}
+def trivyScanFile(String path, String file){
+    sh"""
+    docker run --rm \
+    -v ${path}:/work \
+    -w /work \
+    aquasec/trivy:latest \
+    config ${file} \
+    --severity HIGH,CRITICAL \
+    --exit-code 1
+    """
+} 
+def kubeScoreScan(String path, String file){
+    withEnv([
+        "PATH=${path}",
+        "FILE=${file}",
+        ]) {
+    sh '''
+    docker run --rm \
+      -v $PATH:/work \
+      zegl/kube-score:latest \
+      score /work/$FILE
+    '''    
+}
 }
