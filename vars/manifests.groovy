@@ -20,6 +20,7 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
             cp chart/* -r temp/
             cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
             helm template ${appName} ./temp \
+            -n ${envShortName} \
             --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
             --set-string pod.tag="${tag}" \
             --set-string pod.name="${appName}" \
