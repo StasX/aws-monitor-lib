@@ -25,3 +25,17 @@ def choiceEnv(){
     }
     return [envShortType, envType]
 }
+
+def wrongConfiguration(){
+    def userInput = input(
+        message: 'The .app-info.json not match this application.  Do you want to continue with it?',
+        ok: 'Yes',
+        parameters: [
+            choice(choices: ['Yes', 'No'], name: 'PROCEED_CHOICE')
+        ]
+    )
+    if (userInput == 'No') {
+        currentBuild.result = 'ABORTED'
+        error("Build manually aborted.")
+    }
+}
