@@ -1,11 +1,11 @@
-def pull(String repo, String repoOwner) {
+def pull(String repo, String repoOwner, String branch) {
     echo "Cloning..."
     withEnv([
-        "REPO=${repoOwner}/${repo}"
+        "REPO=${repoOwner}/${repo}",
+        "BRANCH=${repoOwner}/${repo, branch}",
     ]) {
         sh '''
-            echo cloning "https://github.com/$REPO.git" 
-            git clone "https://github.com/$REPO.git"
+        git clone -b $BRANCH --single-branch "https://github.com/$REPO.git"
         '''
     }
 }
@@ -18,7 +18,7 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
             rm -rf manifests && \
             mkdir manifests
             cp chart/* -r temp/
-            cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
+            cp ${gitOpsRepo}/${envShortName}/values.yaml temp/
             helm template ${appName} ./temp \
             -n ${envShortName} \
             --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
@@ -34,7 +34,7 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
     rm -rf manifests && \
     mkdir manifests
     cp chart/* -r temp/
-    cp ${gitOpsRepo}/${appName}/${envShortName}/values.yaml temp/
+    cp ${gitOpsRepo}/${envShortName}/values.yaml temp/
     helm template ${appName} ./temp \
     --set-string pod.image="${ dockerRepoOwner }/${imageName}" \
     --set-string pod.tag="${tag}-${envShortName}" \
@@ -55,11 +55,11 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         "GIT_EMAIL=${email}"
         ]) {
             sh ''' 
-                mkdir -p $REPO/manifests/$APP_NAME/$ENV_SHORT_NAME
-                cp manifests/app.yaml "$REPO/manifests/$APP_NAME/$ENV_SHORT_NAME"
+                mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME
+                cp manifests/app.yaml "$REPO/$APP_NAME/$ENV_SHORT_NAME"
                 git -C "$REPO" config user.name "$GH_USER"
                 git -C "$REPO" config user.email "$GIT_EMAIL"
-                git -C "$REPO" add manifests/$APP_NAME/$ENV_SHORT_NAME/app.yaml
+                git -C "$REPO" add $APP_NAME/$ENV_SHORT_NAME/app.yaml
                 git -C "$REPO" commit -m "Update application in $ENV_SHORT_NAME environment"
                 git -C "$REPO" remote set-url origin https://x-access-token:$GH_TOKEN@github.com/$REPO_OWNER/$REPO.git
                 git -C "$REPO" push origin main
