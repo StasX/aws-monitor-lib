@@ -57,7 +57,6 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         ]) {
             sh ''' 
                 rm -rf $REPO
-                git clone -b $BRANCH --single-branch "https://github.com/$REPO_OWNER/$REPO.git"
                 git config --global user.name "$GH_USER"
                 git config --global user.email "GIT_EMAIL"
                 mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME               
