@@ -58,8 +58,8 @@ def push ( String repo, String repoOwner, String appName, String envName, String
             sh ''' 
                 rm -rf $REPO
                 git clone -b $BRANCH --single-branch "https://github.com/$REPO_OWNER/$REPO.git"
-                git -C "$REPO" config user.name "$USER"
-                git -C "$REPO" config user.email "$EMAIL" 
+                git -C "$REPO" config user.name "$GH_USER"
+                git -C "$REPO" config user.email "GIT_EMAIL" 
                 mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME               
                 cp manifests/app.yaml "$REPO/$APP_NAME/$ENV_SHORT_NAME"
                 git -C "$REPO" add $APP_NAME/$ENV_SHORT_NAME/app.yaml
