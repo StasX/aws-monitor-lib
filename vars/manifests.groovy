@@ -5,6 +5,7 @@ def pull(String repo, String repoOwner, String branch) {
         "BRANCH=${branch}",
     ]) {
         sh '''
+        rm -rf temp $REPO
         git clone -b $BRANCH --single-branch "https://github.com/$REPO.git"
         '''
     }
