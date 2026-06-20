@@ -42,7 +42,7 @@ def create(String envName, String envShortName, String gitOpsRepo, String appNam
     --set secret.enabled=false > manifests/app.yaml      
     """
 }
-def push ( String repo, String repoOwner, String appName, String envName, String envShortName, String email){
+def push ( String repo, String repoOwner, String appName, String envName, String envShortName, String email, String branch="main"){
     echo "Deploying to ${envName}..."
     withCredentials([usernamePassword(credentialsId: 'github_creds', 
     usernameVariable: 'GH_USER', 
@@ -50,18 +50,17 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         withEnv([
         "REPO_OWNER=${repoOwner}",
         "REPO=${repo}",
+        "BRANCH=${branch}",
         "APP_NAME=${appName}",
         "ENV_SHORT_NAME=${envShortName}",
         "GIT_EMAIL=${email}"
         ]) {
             sh ''' 
-                mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME
+                git clone -b $BRANCH --single-branch "https://github.com/$REPO.git"
+                mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME               
                 cp manifests/app.yaml "$REPO/$APP_NAME/$ENV_SHORT_NAME"
-                git -C "$REPO" config user.name "$GH_USER"
-                git -C "$REPO" config user.email "$GIT_EMAIL"
                 git -C "$REPO" add $APP_NAME/$ENV_SHORT_NAME/app.yaml
                 git -C "$REPO" commit -m "Update application in $ENV_SHORT_NAME environment"
-                git -C "$REPO" remote set-url origin https://x-access-token:$GH_TOKEN@github.com/$REPO_OWNER/$REPO.git
                 git -C "$REPO" push origin main
                 rm -r temp
             '''
