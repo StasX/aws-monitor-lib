@@ -1,4 +1,4 @@
-def update(String repoOwner, String repo, String email, String version){
+def updateVersion(String repoOwner, String repo, String email, String version){
     withCredentials([usernamePassword(credentialsId: 'github_creds', 
     usernameVariable: 'USER', 
     passwordVariable: 'TOKEN')]) {
