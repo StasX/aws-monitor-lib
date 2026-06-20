@@ -6,7 +6,7 @@ def pull(String repo, String repoOwner, String branch) {
         "BRANCH=${branch}",
     ]) {
         sh '''
-        rm -rf temp $REPO
+        rm -rf $REPO
         git clone -b $BRANCH --single-branch "https://github.com/$REPO_OWNER/$REPO.git"
         '''
     }
@@ -57,8 +57,7 @@ def push ( String repo, String repoOwner, String appName, String envName, String
         "ENV_SHORT_NAME=${envShortName}",
         "GIT_EMAIL=${email}"
         ]) {
-            sh ''' 
-                rm -rf $REPO
+            sh '''
                 git config --global user.name "$GH_USER"
                 git config --global user.email "GIT_EMAIL"
                 mkdir -p $REPO/$APP_NAME/$ENV_SHORT_NAME               
