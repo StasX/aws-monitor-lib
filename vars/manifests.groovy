@@ -2,7 +2,7 @@ def pull(String repo, String repoOwner, String branch) {
     echo "Cloning..."
     withEnv([
         "REPO=${repoOwner}/${repo}",
-        "BRANCH=${repoOwner}/${branch}",
+        "BRANCH=${branch}",
     ]) {
         sh '''
         git clone -b $BRANCH --single-branch "https://github.com/$REPO.git"
